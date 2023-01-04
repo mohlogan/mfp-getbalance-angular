@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+ .cdk-overlay-container{
+    justify-content: center;
+    display: flex;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.modal.open{
+  z-index: 1003;
+  display: block;
+  opacity: 1;
+  top: 10%;
+  transform: scaleX(1) scaleY(1);
+}
+
+.center{
+  text-align: center !important;
+}
+.page-body{
+  text-align: center;
+  padding: 2rem;
+}
+.overlay{
+  position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+.overlay.show{
+  display: block !important;
+}
+

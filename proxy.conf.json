@@ -1,0 +1,6 @@
+{  
+   "/mfp": {
+      "target": "http://localhost:9080",
+      "secure": false
+   }
+}

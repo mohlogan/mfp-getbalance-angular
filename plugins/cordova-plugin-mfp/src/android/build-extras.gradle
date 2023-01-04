@@ -1,0 +1,77 @@
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            File androidVersionFile = new File("$project.rootDir/../../node_modules/cordova-android/VERSION");
+            File androidPackageFile = new File("$project.rootDir/../../node_modules/cordova-android/package.json");
+
+            BufferedReader br = null;
+            FileReader fr = null;
+            Scanner scanner = null;
+            String sAndroidVersion = "";
+            int version = 0;
+            //check if cordova-android version file exists
+            if (androidVersionFile.exists()) { //cordova plugman version >=8
+                try {
+                    fr = new FileReader(androidVersionFile);
+                    br = new BufferedReader(fr);
+                    sAndroidVersion =   br.readLine();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (br != null)
+                        br.close();
+                    if (fr != null)
+                        fr.close();
+                }
+                version = Character.getNumericValue(sAndroidVersion.charAt(0));
+            } else if (androidPackageFile.exists()) {
+                try {
+                    scanner = new Scanner(androidPackageFile);
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if(line.contains("\"version\":")) {
+                            String[] versionArray = line.replaceAll("\"", "").split(":");
+                            if(versionArray.length == 2) {
+                                String[] versionStr = versionArray[1].trim().split("\\.");
+                                if(versionStr.length>=2) {
+                                    version = Integer.parseInt(versionStr[0]);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                   e.printStackTrace();
+                } finally {
+                  scanner.close();
+                }
+            }
+
+             if (version >= 7) { //cordova-android version >=7
+                    proguardFiles getDefaultProguardFile('proguard-android.txt'), '../app/src/main/proguard-project-mfp.txt'
+             } else { //cordova-android version <7
+                    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-mfp.txt'
+             }
+        }
+    }
+
+    lintOptions {
+        abortOnError false;
+        disable 'MissingTranslation'
+    }
+
+    packagingOptions {
+        pickFirst 'META-INF/ASL2.0'
+        pickFirst 'META-INF/LICENSE'
+        pickFirst 'META-INF/NOTICE'
+    }
+    
+     dependencies {
+     
+   implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.1"
+   implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+   
+}
+}
